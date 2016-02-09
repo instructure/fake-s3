@@ -121,9 +121,11 @@ module FakeS3
 
         response['Last-Modified'] = Time.iso8601(real_obj.modified_date).httpdate()
         response.header['ETag'] = "\"#{real_obj.md5}\""
-        content_disposition = request.query['filename']
-        unless content_disposition.nil?
-          response.header['Content-Disposition'] = "attachment; filename='#{content_disposition}'"
+
+        content_disposition = request.query['response-content-disposition']
+        unless content_disposition.empty?
+          file_name = request.query['filename']
+          response.header['Content-Disposition'] = "#{content_disposition}; filename='#{file_name}'"
         end
         response['Accept-Ranges'] = "bytes"
         response['Last-Ranges'] = "bytes"
