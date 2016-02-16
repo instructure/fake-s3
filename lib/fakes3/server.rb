@@ -123,7 +123,7 @@ module FakeS3
         response.header['ETag'] = "\"#{real_obj.md5}\""
 
         disposition = request.query['response-content-disposition']
-        response.header['Content-Disposition'] = disposition if disposition.present?
+        response.header['Content-Disposition'] = disposition unless disposition.nil? || disposition.empty?
         response['Accept-Ranges'] = "bytes"
         response['Last-Ranges'] = "bytes"
         response['Access-Control-Allow-Origin'] = '*'
